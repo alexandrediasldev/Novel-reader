@@ -18,8 +18,11 @@ int main(int argc, char *argv[])
 
 
 
-   MyWindow.showMaximized();
+    MyWindow.showMaximized();
     MyWindow.changeMargin();
+
+
+
 
 
 

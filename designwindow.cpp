@@ -22,7 +22,6 @@ letterSpacing =parentLetterSpacing;
 paddingH = parentPaddingH;
 paddingV = parentPaddingV;
 
-QMessageBox::information(this,QString::number(paddingH),QString::number(paddingV));
 designTab = new QTabWidget(this);
 
 QWidget *maintab = new QWidget();
@@ -125,9 +124,7 @@ spinboxPaddingH->setValue(paddingH);
 spinboxPaddingV->setValue(paddingV);
 
 
-changePaddingH(paddingH);
-changePaddingV(paddingV);
-
+changePaddingHV(paddingH,paddingV);
 
 layoutSlider->addWidget(spinboxPaddingH);
 layoutSlider->addWidget(spinboxPaddingV);
@@ -141,10 +138,10 @@ double heigth = geometry.height();
 double newvalue1 = (heigth*heigthValue)/200;
 double newvalue2 = (width*widthValue)/200;
 
-layoutRead->setContentsMargins(newvalue2,newvalue1,newvalue2,newvalue1);
+layoutRead->setContentsMargins(int(newvalue2),int(newvalue1),int(newvalue2),int(newvalue1));
 
-marginbottomtop = newvalue1;
-marginleftright = newvalue2;
+marginbottomtop = int(newvalue1);
+marginleftright = int(newvalue2);
 
 
 /*Letter Spacing*/
@@ -206,7 +203,8 @@ layoutBorder->addWidget(buttonBorderColor,20);
 layoutTabAdvanced->addLayout(layoutBorder);
 
 
-
+//important debug maybe
+QMessageBox::information(this,QString::number(widthValueP),QString::number(heigthValueP));
 
 
 
@@ -255,8 +253,8 @@ void designWindow::changeMarginH(int value)
 
 
     double newvalue = (width*value)/200;
-    layoutRead->setContentsMargins(newvalue,marginbottomtop,newvalue,marginbottomtop);
-    marginleftright = newvalue;
+    layoutRead->setContentsMargins(int(newvalue),marginbottomtop,int(newvalue),marginbottomtop);
+    marginleftright = int(newvalue);
 
     if(!timerPadding1->isSingleShot())
     {
@@ -294,9 +292,9 @@ void designWindow::changeMarginV(int value)
 
     double newvalue = (heigth*value)/200;
 
-    layoutRead->setContentsMargins(marginleftright,newvalue,marginleftright,newvalue);
+    layoutRead->setContentsMargins(marginleftright,int(newvalue),marginleftright,int(newvalue));
 
-    marginbottomtop = newvalue;
+    marginbottomtop = int(newvalue);
 
     if(!timerPadding1->isSingleShot())
     {
@@ -337,8 +335,8 @@ void designWindow::changePaddingH(int value)
 
 
 
-    double newvalue = (width*value)/300;
-    widthValueP = newvalue;
+    double newvalue = (width*value)/200;
+    widthValueP = int(newvalue);
 
 
 
@@ -357,12 +355,38 @@ void designWindow::changePaddingV(int value)
      }
 
 
-    double newvalue = (heigth*value)/300;
+    double newvalue = (heigth*value)/200;
 
 
-    heigthValueP = newvalue;
+    heigthValueP = int(newvalue);
 
     changeStyle();
+
+}
+void designWindow::changePaddingHV(int valueH,int valueV)
+{
+    paddingH= valueH;
+    paddingV= valueV;
+   //set the vertical size of the reading layout based on the size of the window and the value of the slider
+    QRect geometry = layoutRead->contentsRect();
+    double heigth = geometry.height();
+    double width = geometry.width();
+    if(heigth<0)
+    {
+        return;
+    }
+    if(width<0)
+    {
+        return;
+    }
+
+
+
+    double newvalueH = (width*valueH)/200;
+    widthValueP = int(newvalueH);
+    double newvalueV = (heigth*valueV)/200;
+    heigthValueP = int(newvalueV);
+    //QMessageBox::information(this,QString::number(widthValueP),QString::number(heigthValueP));
 
 }
 void designWindow::changeScrollBar(int state)
@@ -438,7 +462,11 @@ void designWindow::saveConfig()
             stream <<QString::number(paddingV)<<endl;
 
 
+
+            file.close();
+
         }
+
 }
 void designWindow::quit()
 {
@@ -580,6 +608,7 @@ void designWindow::changeStyle()
                                "padding-right: "
                                +QString::number(widthValueP)+
                                "px;"
+
 
                             );
 

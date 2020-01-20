@@ -72,7 +72,9 @@ window::window()
 
 
     addReadingPage();
+
     readConfig();
+
 
     readingPage->setFontPointSize(textSize);
 
@@ -101,12 +103,21 @@ if(width>=0 && heigth>=0)
     double newvalue2 = (width*widthvalue)/200;
 
     layoutOuter->setMargin(0);
-    layoutInner->setContentsMargins(newvalue2,newvalue1,newvalue2,newvalue1);
+    layoutInner->setMargin(0);
+    //layoutInner->setContentsMargins(int(newvalue2),int(newvalue1),int(newvalue2),int(newvalue1));
 
-    double newvalue3 = (paddingH*widthvalue)/200;
-    double newvalue4 = (paddingV*heigthvalue)/200;
-    realPaddingH = newvalue3;
-    realPaddingV = newvalue4;
+    double newvalue3 = (paddingH*width)/200;
+    double newvalue4 = (paddingV*heigth)/200;
+    realPaddingH = int(newvalue3);
+    realPaddingV = int(newvalue4);
+
+
+    changeStyle();
+
+
+
+
+
 
 
 }
@@ -476,6 +487,7 @@ void window::readConfig()
 
        }
        inputFile.close();
+
     }
 
     //non style sheet set up
@@ -517,6 +529,38 @@ void window::valueSetter(QString *valueToSet,QString defaultValue,QString line)
 }
 void window::changeStyle()
 {
+    QRect geometry = readingPage->contentsRect();
+    double width = geometry.width();
+    double heigth = geometry.height();
+    //check if padding has been set already, apply padding if yes
+    if(realPaddingH> int(width) || realPaddingH < 0 ||realPaddingV> int(heigth) || realPaddingV < 0 )
+    {
+
+    readingPage->setStyleSheet("background-color: "
+                               +backColor+
+                               ";"
+                               "color: "
+                                +textColor+
+                                ";"
+                               "font-size:"
+                               +QString::number(textSize)+
+                               "pt;"
+                               "font-family:"
+                               +textFamily+
+                               ";"
+                               "outline: 0px;"
+                               "outline: none;"
+                               "outline-style: none;"
+                               "border: "
+                                +borderStyle+
+                                  ";"
+
+                            );
+
+    }
+    else
+    {
+
 
 
     readingPage->setStyleSheet("background-color: "
@@ -537,19 +581,22 @@ void window::changeStyle()
                                "border: "
                                 +borderStyle+
                                   ";"
-                               "padding-top: "
-                               +QString::number(realPaddingH)+
-                               "px;"
-                               "padding-bottom: "
-                               +QString::number(realPaddingH)+
-                               "px;"
-                               "padding-left: "
-                               +QString::number(realPaddingV)+
-                               "px;"
-                               "padding-right: "
-                               +QString::number(realPaddingV)+
-                               "px;"
-                            );
+                                  "padding-top: "
+                                  +QString::number(realPaddingV)+
+                                  "px;"
+                                  "padding-bottom: "
+                                  +QString::number(realPaddingV)+
+                                  "px;"
+                                  "padding-left: "
+                                  +QString::number(realPaddingH)+
+                                  "px;"
+                                  "padding-right: "
+                                  +QString::number(realPaddingH)+
+                                  "px;"
+                               );
+}
+
+
 }
 
 

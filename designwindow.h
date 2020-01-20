@@ -123,6 +123,7 @@ public slots:
     void changeLetterSpacing();
     void changePaddingH(int value);
     void changePaddingV(int value);
+    void changePaddingHV(int valueH,int valueV);
 
     void activateBorder(int state);
     void openColorText();
