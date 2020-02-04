@@ -100,7 +100,7 @@ void window::changeMargin()
 
 if(widthOut>=0 && heigthOut>=0)
 {
-    QMessageBox::information(this,"margin","margin");
+
     double newvalueOut1 = (heigthOut*heigthvalue)/200;
     double newvalueOut2 = (widthOut*widthvalue)/200;
 
@@ -382,11 +382,10 @@ void window::openDownloadTab()
 {
 
 
-    //pageDownload = new QWidget();
 
     HttpWindow win;
     win.exec();
-    //win.setParent(pageDownload);
+
 
 
 }
@@ -521,8 +520,9 @@ void window::readConfig()
     curFont.setLetterSpacing(QFont::PercentageSpacing, letterSpacing);
     readingPage->setFont(curFont);
 
+    //changeMargin to set realPadding then it call changeStyle
+    changeMargin();
 
-    changeStyle();
 
 }
 void window::valueSetter(int *valueToSet,int defaultValue,QString line)
