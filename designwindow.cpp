@@ -104,8 +104,8 @@ layoutSlider->addWidget(spinboxMarginH);
 layoutSlider->addWidget(labelMarginV);
 layoutSlider->addWidget(spinboxMarginV);
 
-spinboxMarginH->setRange(0,80);
-spinboxMarginV->setRange(0,80);
+spinboxMarginH->setRange(0,50);
+spinboxMarginV->setRange(0,50);
 
 
 heigthValue =parentheigthvalue;
@@ -118,8 +118,8 @@ spinboxMarginH->setValue(widthValue);
 
 spinboxPaddingH = new QSpinBox();
 spinboxPaddingV = new QSpinBox();
-spinboxPaddingH->setRange(0,60);
-spinboxPaddingV->setRange(0,60);
+spinboxPaddingH->setRange(0,30);
+spinboxPaddingV->setRange(0,30);
 spinboxPaddingH->setValue(paddingH);
 spinboxPaddingV->setValue(paddingV);
 
@@ -203,8 +203,7 @@ layoutBorder->addWidget(buttonBorderColor,20);
 layoutTabAdvanced->addLayout(layoutBorder);
 
 
-//important debug maybe
-QMessageBox::information(this,QString::number(widthValueP),QString::number(heigthValueP));
+
 
 
 
@@ -612,7 +611,7 @@ void designWindow::changeStyle()
 
                             );
 
-    //saveConfig();
+    saveConfig();
 
 }
 
@@ -622,7 +621,7 @@ void designWindow::reject()
 {
     timerPadding1->stop();
     timerPadding2->stop();
-    saveConfig();
+    changeStyle();
     QDialog::reject();
 
 

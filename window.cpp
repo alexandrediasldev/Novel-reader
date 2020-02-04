@@ -93,24 +93,40 @@ void window::changeMargin()
 {
 
     //set the size of the margin (we need to wait for the window to be shown this is why there is a timer)
-    QRect geometry = layoutOuter->contentsRect();
-    double width = geometry.width();
-    double heigth = geometry.height();
+    QRect geometryOut = layoutOuter->contentsRect();
 
-if(width>=0 && heigth>=0)
+    double widthOut = geometryOut.width();
+    double heigthOut = geometryOut.height();
+
+if(widthOut>=0 && heigthOut>=0)
 {
-    double newvalue1 = (heigth*heigthvalue)/200;
-    double newvalue2 = (width*widthvalue)/200;
+    QMessageBox::information(this,"margin","margin");
+    double newvalueOut1 = (heigthOut*heigthvalue)/200;
+    double newvalueOut2 = (widthOut*widthvalue)/200;
 
     layoutOuter->setMargin(0);
-    layoutInner->setMargin(0);
-    //layoutInner->setContentsMargins(int(newvalue2),int(newvalue1),int(newvalue2),int(newvalue1));
+    layoutInner->setContentsMargins(int(newvalueOut2),int(newvalueOut1),int(newvalueOut2),int(newvalueOut1));
 
-    double newvalue3 = (paddingH*width)/200;
-    double newvalue4 = (paddingV*heigth)/200;
-    realPaddingH = int(newvalue3);
-    realPaddingV = int(newvalue4);
 
+    QRect geometryIn = layoutInner->contentsRect();
+
+    double widthIn = geometryIn.width();
+    double heigthIn = geometryIn.height();
+    if(widthIn>=0 && heigthIn>=0)
+    {
+
+
+
+    double newvalueIn1 = (paddingH*widthIn)/200;
+    double newvalueIn2 = (paddingV*heigthIn)/200;
+    realPaddingH = int(newvalueIn1);
+    realPaddingV = int(newvalueIn2);
+
+    }
+    else
+    {
+         QTimer::singleShot(200, this, SLOT(changeMargin()));
+    }
 
     changeStyle();
 
@@ -535,6 +551,7 @@ void window::changeStyle()
     //check if padding has been set already, apply padding if yes
     if(realPaddingH> int(width) || realPaddingH < 0 ||realPaddingV> int(heigth) || realPaddingV < 0 )
     {
+    //QMessageBox::information(this,"yes","yes");
 
     readingPage->setStyleSheet("background-color: "
                                +backColor+
