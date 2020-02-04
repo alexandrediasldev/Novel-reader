@@ -53,6 +53,7 @@ public:
     void openAndReadFile();
     void openAndReadFile(QString fileToOpen);
     void openAndCleanFile();
+    QString regexParagraph(QString html);
     void changeChapter();
 
 

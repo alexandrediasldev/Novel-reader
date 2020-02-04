@@ -202,50 +202,37 @@ void window::cleanAllFileInADir()
         }
 
 
-    QString pathwithoutname = QFileInfo(filePath).absolutePath()+"/";
-    QDir directory(QFileInfo(filePath).absoluteDir());
-    QStringList fileindir = directory.entryList(QDir::Files);
-    foreach(QString filename, fileindir) {
-        QFile file(pathwithoutname+filename);
-        file.open(QFile::ReadOnly | QFile::Text);
-        QTextStream stream(&file);
+        QString pathwithoutname = QFileInfo(filePath).absolutePath()+"/";
+        QDir directory(QFileInfo(filePath).absoluteDir());
+        QStringList fileindir = directory.entryList(QDir::Files);
+        foreach(QString filename, fileindir)
+        {
+            QFile file(pathwithoutname+filename);
+            file.open(QFile::ReadOnly | QFile::Text);
+            QTextStream stream(&file);
 
-        QString html = stream.readAll();
-        file.close();
+            QString html = stream.readAll();
+            file.close();
 
             QFile file2(pathToClean+"/"+filename);
-            if (file2.open(QIODevice::ReadWrite)) {
+            if (file2.open(QIODevice::ReadWrite))
+            {
 
-                QString html2 = html;
-                QString html3 ="";
-                int i =0;
-                int j =0;
+                QString cleanHtml;
+                cleanHtml = regexParagraph(html);
 
-                //parsing the the file to keep only the text between p
-                //html2.replace(QRegularExpression("(<p>(.+?)</p>)"),"");
-                html2.replace(QRegularExpression("<p.*>(.+)</p>"),"");
-                while(i<html.length())
-                {
-                    if(html[i] == html2[j])
-                    {
-                        i++;
-                        j++;
-                    }
-                    else {
-                        html3+= html[i];
-                        i++;
-                    }
-                }
                 QTextStream stream(&file2);
-                stream << html3;
+                stream << cleanHtml;
+                file2.close();
             }
-            file.close();
+
         }
+        QMessageBox::information(this,"Clean","All files in the directory have been cleaned");
 
     }
     else
     {
-       QMessageBox::warning(this,"Invalid directory","The directory is invalid, open a file in a valid directory named Raw");
+        QMessageBox::warning(this,"Invalid directory","The directory is invalid, open a file in a valid directory named Raw");
     }
 }
 void window::openAndReadFile()
@@ -282,23 +269,6 @@ void window::openAndReadFile(QString fileToOpen)
     readingPage->setHtml(html.toLocal8Bit());
 
 }
-void window::changeChapter()
-{
-    //get all files name in the dir and load next chapter
-        QString pathwithoutname = QFileInfo(filePath).absolutePath()+"/";
-        QDir directory(QFileInfo(filePath).absoluteDir());
-        QStringList fileindir = directory.entryList(QDir::Files);
-
-
-        if(fileindir.indexOf(QFileInfo(filePath).fileName())+1< fileindir.length())
-        {
-            openAndReadFile(pathwithoutname + fileindir[fileindir.indexOf(QFileInfo(filePath).fileName())+1]);
-        }
-        else {
-            QMessageBox::information(this,"No more chapter","No more chapter");
-        }
-
-}
 void window::openAndCleanFile()
 {
     getFilePath();
@@ -308,36 +278,14 @@ void window::openAndCleanFile()
         file.open(QFile::ReadOnly | QFile::Text);
         QTextStream stream(&file);
         QString html = stream.readAll();
+
         file.close();
-    //special character that don't like readAll
-        replaceHtml(&html);
-        html.replace(QRegularExpression("(<head>(?:.|\n|\r)+?</head>)"),"");
-        QString html2 = html;
-        QString html3 ="";
-        int i =0;
-        int j =0;
 
-    //parsing the the file to keep only the text between p
-    //html2.replace(QRegularExpression("(<p>(.+?)</p>)"),"");
-        html2.replace(QRegularExpression("<p.*>(.+)</p>"),"");
-        while(i<html.length())
-        {
-            if(html[i] == html2[j])
-            {
-                i++;
-                j++;
-            }
-            else {
-                html3+= html[i];
-                i++;
-            }
-        }
+        QString cleanHtml;
+        cleanHtml = regexParagraph(html);
 
 
-
-        readingPage->setHtml(html3);
-
-    //absolutepath two time to get into the dir of the novel from the dir raw
+        //absolutepath two time to get into the dir of the novel from the dir raw
 
         QString pathToClean = QFileInfo(QFileInfo(filePath).absolutePath()).absolutePath()+"/Clean";
         if(!QDir(pathToClean).exists())
@@ -348,7 +296,8 @@ void window::openAndCleanFile()
         QFile file2(pathToClean+"/"+filename);
         if (file2.open(QIODevice::ReadWrite)) {
             QTextStream stream(&file2);
-            stream << html3;
+            stream << cleanHtml;
+            openAndReadFile(pathToClean+"/"+filename);
         }
     }
     else
@@ -356,6 +305,50 @@ void window::openAndCleanFile()
         QMessageBox::warning(this,"Invalid directory","The directory is invalid, open a file in a valid directory named Raw");
     }
 }
+QString window::regexParagraph(QString html)
+{
+    html.replace(QRegularExpression("(<head>(?:.|\n|\r)+?</head>)"),"");
+    QString html2 = html;
+    QString html3 ="";
+    int i =0;
+    int j =0;
+
+    //parsing the the file to keep only the text between p
+    //html2.replace(QRegularExpression("(<p>(.+?)</p>)"),"");
+    html2.replace(QRegularExpression("<p.*>(.+)</p>"),"");
+    while(i<html.length())
+    {
+        if(html[i] == html2[j])
+        {
+            i++;
+            j++;
+        }
+        else {
+            html3+= html[i];
+            i++;
+        }
+    }
+    return html3;
+}
+
+void window::changeChapter()
+{
+    //get all files name in the dir and load next chapter
+    QString pathwithoutname = QFileInfo(filePath).absolutePath()+"/";
+    QDir directory(QFileInfo(filePath).absoluteDir());
+    QStringList fileindir = directory.entryList(QDir::Files);
+
+
+    if(fileindir.indexOf(QFileInfo(filePath).fileName())+1< fileindir.length())
+    {
+        openAndReadFile(pathwithoutname + fileindir[fileindir.indexOf(QFileInfo(filePath).fileName())+1]);
+    }
+    else {
+        QMessageBox::information(this,"No more chapter","No more chapter");
+    }
+
+}
+
 
 
 
