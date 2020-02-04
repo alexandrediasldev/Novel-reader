@@ -78,8 +78,12 @@ window::window()
 
     readingPage->setFontPointSize(textSize);
 
+
     changeScrollBar(scrollBar);
     setBackgroundImage(backgroundPath);
+
+
+
 
 
 
@@ -197,7 +201,7 @@ void window::cleanAllFileInADir()
             QDir().mkdir(pathToClean);
         }
 
-    QTextEdit text;
+
     QString pathwithoutname = QFileInfo(filePath).absolutePath()+"/";
     QDir directory(QFileInfo(filePath).absoluteDir());
     QStringList fileindir = directory.entryList(QDir::Files);
@@ -205,16 +209,9 @@ void window::cleanAllFileInADir()
         QFile file(pathwithoutname+filename);
         file.open(QFile::ReadOnly | QFile::Text);
         QTextStream stream(&file);
+
         QString html = stream.readAll();
         file.close();
-
-
-        //special character that don't like readAll
-        replaceHtml(&html);
-
-        text.setHtml(html);
-
-
 
             QFile file2(pathToClean+"/"+filename);
             if (file2.open(QIODevice::ReadWrite)) {
@@ -261,12 +258,12 @@ void window::openAndReadFile()
     QTextStream stream(&file);
     QString html = stream.readAll();
     file.close();
-    //special character that don't like readAll
-    replaceHtml(&html);
+    stream.setCodec("UTF-8");
 
 
+    readingPage->setHtml(html.toLocal8Bit());
 
-    readingPage->setHtml(html);
+
 
 }
 void window::openAndReadFile(QString fileToOpen)
@@ -279,12 +276,10 @@ void window::openAndReadFile(QString fileToOpen)
     QTextStream stream(&file);
     QString html = stream.readAll();
     file.close();
-    //special character that don't like readAll
-    replaceHtml(&html);
+    stream.setCodec("UTF-8");
 
 
-
-    readingPage->setHtml(html);
+    readingPage->setHtml(html.toLocal8Bit());
 
 }
 void window::changeChapter()

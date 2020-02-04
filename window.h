@@ -23,6 +23,7 @@
 #include <QFileDialog>
 #include <QMainWindow>
 #include <QMenuBar>
+#include <QTextBlock>
 #include "qsmoothscrollarea.h"
 
 
@@ -69,6 +70,7 @@ public:
     void changeStyle();
     void changeMargin();
     void changeScrollBar(int state);
+
 
     void paintEvent(QPaintEvent *);
     void keyPressEvent ( QKeyEvent * event );
