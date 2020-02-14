@@ -103,7 +103,7 @@ void window::changeMargin()
     double widthOut = geometryOut.width();
     double heightOut = geometryOut.height();
 
-if(widthOut>=0 && heightOut>=0)
+if(widthOut >0 && heightOut >0)
 {
 
     double newvalueOut1 = (heightOut*valueV)/200;
@@ -113,39 +113,36 @@ if(widthOut>=0 && heightOut>=0)
     layoutInner->setContentsMargins(int(newvalueOut2),int(newvalueOut1),int(newvalueOut2),int(newvalueOut1));
 
 
-    QRect geometryIn = layoutInner->contentsRect();
+    //changeStyle();
 
-    double widthIn = geometryIn.width();
-    double heightIn = geometryIn.height();
-    if(widthIn>=0 && heightIn>=0)
-    {
-
-
-
-    double newvalueIn1 = (paddingH*widthIn)/200;
-    double newvalueIn2 = (paddingV*heightIn)/200;
-    realPaddingH = int(newvalueIn1);
-    realPaddingV = int(newvalueIn2);
-
-    }
-    else
-    {
-         QTimer::singleShot(200, this, SLOT(changeMargin()));
-    }
-
-    changeStyle();
-
-
-
-
-
-
+    changePadding();
 
 }
 else
 {
         QTimer::singleShot(200, this, SLOT(changeMargin()));
 }
+}
+void window::changePadding()
+{
+    QRect geometryIn = layoutInner->contentsRect();
+
+    double widthIn = geometryIn.width();
+    double heightIn = geometryIn.height();
+    if(widthIn>0 && heightIn>0)
+    {
+
+    double newvalueIn1 = (paddingH*widthIn)/200;
+    double newvalueIn2 = (paddingV*heightIn)/200;
+    realPaddingH = int(newvalueIn1);
+    realPaddingV = int(newvalueIn2);
+    changeStyle();
+
+    }
+    else
+    {
+         QTimer::singleShot(200, this, SLOT(changePadding()));
+    }
 }
 void window::changeScrollBar(int state)
 {
@@ -518,59 +515,20 @@ void window::readConfig()
 
 
 }
-void window::valueSetter(int *valueToSet,int defaultValue,QString line)
-{
-    if(line=='\n'||line==' ')
-        *valueToSet= defaultValue;
-
-    else {
-        *valueToSet= line.toInt();
-    }
-}
-void window::valueSetter(QString *valueToSet,QString defaultValue,QString line)
-{
-    if(line=='\n'||line==' ')
-        *valueToSet= defaultValue;
-
-    else {
-        *valueToSet= line;
-    }
-}
 void window::changeStyle()
 {
+
     QRect geometry = readingPage->contentsRect();
     double width = geometry.width();
     double heigth = geometry.height();
-    //check if padding has been set already, apply padding if yes
-    if(realPaddingH> int(width) || realPaddingH < 0 ||realPaddingV> int(heigth) || realPaddingV < 0 )
+
+    //check if padding has been set already
+    if(realPaddingH>= int(width) || realPaddingH < 0 ||realPaddingV> int(heigth) || realPaddingV < 0 )
     {
-    //QMessageBox::information(this,"yes","yes");
-
-    readingPage->setStyleSheet("background-color: "
-                               +backColor+
-                               ";"
-                               "color: "
-                                +textColor+
-                                ";"
-                               "font-size:"
-                               +QString::number(textSize)+
-                               "pt;"
-                               "font-family:"
-                               +textFamily+
-                               ";"
-                               "outline: 0px;"
-                               "outline: none;"
-                               "outline-style: none;"
-                               "border: "
-                                +borderStyle+
-                                  ";"
-
-                            );
-
+        QTimer::singleShot(200, this, SLOT(changeStyle()));
     }
     else
     {
-
 
 
     readingPage->setStyleSheet("background-color: "
@@ -642,4 +600,23 @@ void window::keyPressEvent ( QKeyEvent * event )
         changeChapter();
 
 
+}
+
+void window::valueSetter(int *valueToSet,int defaultValue,QString line)
+{
+    if(line=='\n'||line==' ')
+        *valueToSet= defaultValue;
+
+    else {
+        *valueToSet= line.toInt();
+    }
+}
+void window::valueSetter(QString *valueToSet,QString defaultValue,QString line)
+{
+    if(line=='\n'||line==' ')
+        *valueToSet= defaultValue;
+
+    else {
+        *valueToSet= line;
+    }
 }

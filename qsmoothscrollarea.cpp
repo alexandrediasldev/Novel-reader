@@ -23,7 +23,9 @@ QSmoothScrollArea::QSmoothScrollArea(QWidget *parent) :
     m_acceleration = 2.5;
 
 
+
     m_smallStepModifier = Qt::SHIFT;
+
     m_smallStepRatio = 1.0 / 5.0;
     m_bigStepModifier = Qt::ALT;
     m_bigStepRatio = 5.0;

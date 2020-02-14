@@ -73,6 +73,7 @@ public:
 
     void changeStyle();
     void changeMargin();
+    void changePadding();
     void changeScrollBar(int state);
 
 

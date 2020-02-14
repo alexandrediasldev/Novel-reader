@@ -35,13 +35,6 @@ setupGeneralTab(generalTab);
 setupAdvancedTab(advancedTab);
 
 
-
-
-
-
-
-
-
 QObject::connect(spinboxMarginH,SIGNAL(valueChanged(int)),this,SLOT(changeMarginH(int)));
 QObject::connect(spinboxMarginV,SIGNAL(valueChanged(int)),this,SLOT(changeMarginV(int)));
 QObject::connect(marginH,SIGNAL(sliderReleased()),this,SLOT(saveConfig()));
@@ -65,7 +58,6 @@ designTab->setGeometry(generalTab->rect());
 
 
 timerPadding1 = new QTimer();
-
 timerPadding2 = new QTimer();
 
 
@@ -242,11 +234,10 @@ void designWindow::setupAdvancedTab(QWidget *advancedTab)
 void designWindow::changeMarginH(int value)
 {
 
-
-    widthValueP=0;
-
-    heigthValueP=0;
-    changeStyle();
+    //Useless (maybe)
+    //widthValueP=0;
+    //heigthValueP=0;
+    //changeStyle();
 
 
     widthValue=value;
@@ -256,8 +247,11 @@ void designWindow::changeMarginH(int value)
 
 
     double newvalue = (width*value)/200;
+    if(width > 0)
+    {
     layoutInner->setContentsMargins(int(newvalue),marginbottomtop,int(newvalue),marginbottomtop);
     marginleftright = int(newvalue);
+    }
 
     if(!timerPadding1->isSingleShot())
     {
@@ -271,6 +265,8 @@ void designWindow::changeMarginH(int value)
         timerPadding2->stop();
         timerPadding2->singleShot(200,[=]() {changePaddingV(spinboxPaddingV->value());});
     }
+
+
 
 
 
@@ -281,23 +277,22 @@ void designWindow::changeMarginH(int value)
 }
 void designWindow::changeMarginV(int value)
 {
-
-     widthValueP=0;
-
-     heigthValueP=0;
-     changeStyle();
+    //Useless (maybe)
+    //widthValueP=0;
+    //heigthValueP=0;
+    //changeStyle();
 
     heigthValue =value;
-    //set the vertical size of the reading layout based on the size of the window and the value of the slider
+    //set the vertical size of the reading/inner layout based on the size of the window and the value of the slider
     QRect geometry = layoutOuter->contentsRect();
-     double heigth = geometry.height();
 
-
-    double newvalue = (heigth*value)/200;
-
-    layoutInner->setContentsMargins(marginleftright,int(newvalue),marginleftright,int(newvalue));
-
-    marginbottomtop = int(newvalue);
+    double height = geometry.height();
+    double newheight = (height*value)/200;
+    if(height > 0)
+    {
+    layoutInner->setContentsMargins(marginleftright,int(newheight),marginleftright,int(newheight));
+    marginbottomtop = int(newheight);
+    }
 
     if(!timerPadding1->isSingleShot())
     {
@@ -311,6 +306,7 @@ void designWindow::changeMarginV(int value)
         timerPadding2->stop();
         timerPadding2->singleShot(200,[=]() {changePaddingV(spinboxPaddingV->value());});
     }
+
 
 
 
