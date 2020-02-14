@@ -107,7 +107,7 @@ private:
     QVBoxLayout *layoutSlider;
     QHBoxLayout * layoutBackground;
     QHBoxLayout *layoutBorder;
-    QGridLayout *layoutRead;
+    QGridLayout *layoutInner;
     QGridLayout *layoutOuter;
     QHBoxLayout *layoutSpacing;
 

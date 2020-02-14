@@ -29,6 +29,8 @@
 
 
 
+
+
 class window : public QMainWindow
 {
     Q_OBJECT
@@ -54,6 +56,7 @@ public:
     void openAndReadFile(QString fileToOpen);
     void openAndCleanFile();
     QString regexParagraph(QString html);
+
     void changeChapter();
 
 
@@ -98,8 +101,8 @@ public:
     QString backColor;
     QString textColor;
     int textSize;
-    int heigthvalue;
-    int widthvalue;
+    int valueV;
+    int valueH;
     int scrollBar;
     QString outline;
     QString textFamily;

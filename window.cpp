@@ -6,6 +6,7 @@
 
 
 
+
 window::window()
 {
 
@@ -105,8 +106,8 @@ void window::changeMargin()
 if(widthOut>=0 && heigthOut>=0)
 {
 
-    double newvalueOut1 = (heigthOut*heigthvalue)/200;
-    double newvalueOut2 = (widthOut*widthvalue)/200;
+    double newvalueOut1 = (heigthOut*valueV)/200;
+    double newvalueOut2 = (widthOut*valueH)/200;
 
     layoutOuter->setMargin(0);
     layoutInner->setContentsMargins(int(newvalueOut2),int(newvalueOut1),int(newvalueOut2),int(newvalueOut1));
@@ -305,6 +306,7 @@ void window::openAndCleanFile()
         QMessageBox::warning(this,"Invalid directory","The directory is invalid, open a file in a valid directory named Raw");
     }
 }
+
 QString window::regexParagraph(QString html)
 {
     html.replace(QRegularExpression("(<head>(?:.|\n|\r)+?</head>)"),"");
@@ -329,6 +331,9 @@ QString window::regexParagraph(QString html)
         }
     }
     return html3;
+
+
+
 }
 
 void window::changeChapter()
@@ -357,7 +362,7 @@ void window::openDesign()
 {
 
 
-    designWindow win(layoutInner,layoutOuter,readingPage,backColor,textColor,heigthvalue,widthvalue,scrollBar,textSize,textFamily,backgroundPath
+    designWindow win(layoutInner,layoutOuter,readingPage,backColor,textColor,valueV,valueH,scrollBar,textSize,textFamily,backgroundPath
                      ,borderSize,borderColor,borderState,letterSpacing,paddingH,paddingV);
     win.exec();
     win.setParent(this);
@@ -462,9 +467,9 @@ void window::readConfig()
           if(index==1) 
               valueSetter(&textColor,"#000000",line);
           if(index==2)
-              valueSetter(&heigthvalue,0,line);
+              valueSetter(&valueV,0,line);
           if(index==3)
-              valueSetter(&widthvalue,0,line);
+              valueSetter(&valueH,0,line);
           if(index==4)
               valueSetter(&scrollBar,0,line);
           if(index==5)

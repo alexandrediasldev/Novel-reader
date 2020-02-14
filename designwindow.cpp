@@ -6,7 +6,7 @@ designWindow::designWindow(QGridLayout *parentLayoutInner,QGridLayout *parentLay
                            int parentPaddingV)
 {
 
-layoutRead =parentLayoutInner;
+layoutInner =parentLayoutInner;
 layoutOuter = parentLayoutOuter;
 readingPage =parentReadingPage;
 textColor = parentTextColor;
@@ -34,21 +34,16 @@ QVBoxLayout *layoutTabGeneral = new QVBoxLayout(generaltab);
 
 /*Font*/
 
-
 labelTextFont = new QLabel("Font:");
-
 layoutTabGeneral->addWidget(labelTextFont);
 
 buttonFont = new QPushButton();
 buttonFont->setText(textFamily);
-
 layoutTabGeneral->addWidget(buttonFont);
+
 /*Color*/
 
-
-
 buttonTextColor = new QPushButton(textColor);
-
 buttonBackColor = new QPushButton(backColor);
 addSquareColor(buttonTextColor,textColor);
 addSquareColor(buttonBackColor,backColor);
@@ -62,7 +57,6 @@ layoutTabGeneral->addWidget(labelBackColor);
 layoutTabGeneral->addWidget(buttonBackColor);
 
 
-
 /*Secondary Background*/
 
 labelBackground = new QLabel("Secondary background style:");
@@ -70,7 +64,6 @@ layoutTabGeneral->addWidget(labelBackground);
 
 
 layoutBackground = new QHBoxLayout();
-
 
 buttonBackgroundImage = new QPushButton();
 buttonBackgroundImage->setText("Choose a secondary background Image");
@@ -138,7 +131,7 @@ double heigth = geometry.height();
 double newvalue1 = (heigth*heigthValue)/200;
 double newvalue2 = (width*widthValue)/200;
 
-layoutRead->setContentsMargins(int(newvalue2),int(newvalue1),int(newvalue2),int(newvalue1));
+layoutInner->setContentsMargins(int(newvalue2),int(newvalue1),int(newvalue2),int(newvalue1));
 
 marginbottomtop = int(newvalue1);
 marginleftright = int(newvalue2);
@@ -252,7 +245,7 @@ void designWindow::changeMarginH(int value)
 
 
     double newvalue = (width*value)/200;
-    layoutRead->setContentsMargins(int(newvalue),marginbottomtop,int(newvalue),marginbottomtop);
+    layoutInner->setContentsMargins(int(newvalue),marginbottomtop,int(newvalue),marginbottomtop);
     marginleftright = int(newvalue);
 
     if(!timerPadding1->isSingleShot())
@@ -291,7 +284,7 @@ void designWindow::changeMarginV(int value)
 
     double newvalue = (heigth*value)/200;
 
-    layoutRead->setContentsMargins(marginleftright,int(newvalue),marginleftright,int(newvalue));
+    layoutInner->setContentsMargins(marginleftright,int(newvalue),marginleftright,int(newvalue));
 
     marginbottomtop = int(newvalue);
 
@@ -323,7 +316,7 @@ void designWindow::changePaddingH(int value)
 
     paddingH=value;
     //set the horizontal size of the reading layout based on the size of the window and the value of the slider
-    QRect geometry = layoutRead->contentsRect();
+    QRect geometry = layoutInner->contentsRect();
     double width = geometry.width();
     if(width<0)
     {
@@ -346,7 +339,7 @@ void designWindow::changePaddingV(int value)
 {
      paddingV=value;
     //set the vertical size of the reading layout based on the size of the window and the value of the slider
-    QRect geometry = layoutRead->contentsRect();
+    QRect geometry = layoutInner->contentsRect();
      double heigth = geometry.height();
      if(heigth<0)
      {
@@ -367,7 +360,7 @@ void designWindow::changePaddingHV(int valueH,int valueV)
     paddingH= valueH;
     paddingV= valueV;
    //set the vertical size of the reading layout based on the size of the window and the value of the slider
-    QRect geometry = layoutRead->contentsRect();
+    QRect geometry = layoutInner->contentsRect();
     double heigth = geometry.height();
     double width = geometry.width();
     if(heigth<0)
@@ -474,8 +467,8 @@ void designWindow::quit()
 void designWindow::getBackgroundPath()
 {
     backgroundPath = QFileDialog::getOpenFileName(this,"Open a file",""," (*)");
-    layoutRead->parentWidget()->setObjectName("background");
-    layoutRead->parentWidget()->setStyleSheet("QWidget#background {"
+    layoutInner->parentWidget()->setObjectName("background");
+    layoutInner->parentWidget()->setStyleSheet("QWidget#background {"
                                     "border-image: url("+backgroundPath+")"
                                         "}");
     buttonBackgroundColor->setText("Choose a background Color");
@@ -540,8 +533,8 @@ void designWindow::openColorBackground()
 
 
 
-        layoutRead->parentWidget()->setObjectName("background");
-        layoutRead->parentWidget()->setStyleSheet("QWidget#background {"
+        layoutInner->parentWidget()->setObjectName("background");
+        layoutInner->parentWidget()->setStyleSheet("QWidget#background {"
                                         "background-color: "+backgroundPath+";"
                                             "}");
         buttonBackgroundImage->setText("Choose a background Image");
