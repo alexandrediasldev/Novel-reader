@@ -124,6 +124,8 @@ public slots:
     void changePaddingH(int value);
     void changePaddingV(int value);
     void changePaddingHV(int valueH,int valueV);
+    void setupGeneralTab(QWidget *generalTab);
+    void setupAdvancedTab(QWidget *advancedTab);
 
     void activateBorder(int state);
     void openColorText();

@@ -101,12 +101,12 @@ void window::changeMargin()
     QRect geometryOut = layoutOuter->contentsRect();
 
     double widthOut = geometryOut.width();
-    double heigthOut = geometryOut.height();
+    double heightOut = geometryOut.height();
 
-if(widthOut>=0 && heigthOut>=0)
+if(widthOut>=0 && heightOut>=0)
 {
 
-    double newvalueOut1 = (heigthOut*valueV)/200;
+    double newvalueOut1 = (heightOut*valueV)/200;
     double newvalueOut2 = (widthOut*valueH)/200;
 
     layoutOuter->setMargin(0);
@@ -116,14 +116,14 @@ if(widthOut>=0 && heigthOut>=0)
     QRect geometryIn = layoutInner->contentsRect();
 
     double widthIn = geometryIn.width();
-    double heigthIn = geometryIn.height();
-    if(widthIn>=0 && heigthIn>=0)
+    double heightIn = geometryIn.height();
+    if(widthIn>=0 && heightIn>=0)
     {
 
 
 
     double newvalueIn1 = (paddingH*widthIn)/200;
-    double newvalueIn2 = (paddingV*heigthIn)/200;
+    double newvalueIn2 = (paddingV*heightIn)/200;
     realPaddingH = int(newvalueIn1);
     realPaddingV = int(newvalueIn2);
 

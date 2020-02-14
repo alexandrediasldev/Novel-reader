@@ -21,179 +21,21 @@ borderState =parentBorderState;
 letterSpacing =parentLetterSpacing;
 paddingH = parentPaddingH;
 paddingV = parentPaddingV;
+heigthValue =parentheigthvalue;
+widthValue= parentwidthvalue;
 
 designTab = new QTabWidget(this);
 
-QWidget *maintab = new QWidget();
-QWidget *colortab = new QWidget();
-QWidget *generaltab = new QWidget();
-QWidget *advancedtab = new QWidget();
+QWidget *mainTab = new QWidget();
+QWidget *colorTab = new QWidget();
+QWidget *generalTab = new QWidget();
+QWidget *advancedTab = new QWidget();
 
-/*GeneralTab*/
-QVBoxLayout *layoutTabGeneral = new QVBoxLayout(generaltab);
-
-/*Font*/
-
-labelTextFont = new QLabel("Font:");
-layoutTabGeneral->addWidget(labelTextFont);
-
-buttonFont = new QPushButton();
-buttonFont->setText(textFamily);
-layoutTabGeneral->addWidget(buttonFont);
-
-/*Color*/
-
-buttonTextColor = new QPushButton(textColor);
-buttonBackColor = new QPushButton(backColor);
-addSquareColor(buttonTextColor,textColor);
-addSquareColor(buttonBackColor,backColor);
-
-labelBackColor = new QLabel("Change primary background color:");
-labelTextColor = new QLabel("Change text color:");
-
-layoutTabGeneral->addWidget(labelTextColor);
-layoutTabGeneral->addWidget(buttonTextColor);
-layoutTabGeneral->addWidget(labelBackColor);
-layoutTabGeneral->addWidget(buttonBackColor);
-
-
-/*Secondary Background*/
-
-labelBackground = new QLabel("Secondary background style:");
-layoutTabGeneral->addWidget(labelBackground);
-
-
-layoutBackground = new QHBoxLayout();
-
-buttonBackgroundImage = new QPushButton();
-buttonBackgroundImage->setText("Choose a secondary background Image");
-buttonBackgroundColor = new QPushButton();
-buttonBackgroundColor->setText("Choose a secondary background Color");
-
-layoutBackground->addWidget(buttonBackgroundColor);
-layoutBackground->addWidget(buttonBackgroundImage);
-
-layoutTabGeneral->addLayout(layoutBackground);
-
-
-/*AdvancedTab*/
-QVBoxLayout *layoutTabAdvanced = new QVBoxLayout(advancedtab);
-/*Margin*/
-marginH = new QSlider(Qt::Horizontal);
-marginV = new QSlider(Qt::Horizontal);
-
-spinboxMarginH = new QSpinBox();
-spinboxMarginV = new QSpinBox();
-
-layoutSlider = new QVBoxLayout();
-layoutTabAdvanced->addLayout(layoutSlider);
-
-labelMarginH = new QLabel("Horizontal margin:");
-labelMarginV = new QLabel("Vertical margin:");
-
-
-layoutSlider->addWidget(labelMarginH);
-layoutSlider->addWidget(spinboxMarginH);
-layoutSlider->addWidget(labelMarginV);
-layoutSlider->addWidget(spinboxMarginV);
-
-spinboxMarginH->setRange(0,50);
-spinboxMarginV->setRange(0,50);
-
-
-heigthValue =parentheigthvalue;
-spinboxMarginV->setValue(heigthValue);
-
-
-widthValue= parentwidthvalue;
-spinboxMarginH->setValue(widthValue);
-
-
-spinboxPaddingH = new QSpinBox();
-spinboxPaddingV = new QSpinBox();
-spinboxPaddingH->setRange(0,30);
-spinboxPaddingV->setRange(0,30);
-spinboxPaddingH->setValue(paddingH);
-spinboxPaddingV->setValue(paddingV);
-
-
-changePaddingHV(paddingH,paddingV);
-
-layoutSlider->addWidget(spinboxPaddingH);
-layoutSlider->addWidget(spinboxPaddingV);
-
-//set the value from last session
-
-QRect geometry = layoutOuter->contentsRect();
-double width = geometry.width();
-double heigth = geometry.height();
-
-double newvalue1 = (heigth*heigthValue)/200;
-double newvalue2 = (width*widthValue)/200;
-
-layoutInner->setContentsMargins(int(newvalue2),int(newvalue1),int(newvalue2),int(newvalue1));
-
-marginbottomtop = int(newvalue1);
-marginleftright = int(newvalue2);
-
-
-/*Letter Spacing*/
-
-labelLetterSpacing = new QLabel("Letter spacing(%):");
-spinboxSpacing = new QSpinBox();
-
-spinboxSpacing->setRange(100,1000);
-spinboxSpacing->setValue(letterSpacing);
-
-layoutSpacing = new QHBoxLayout();
-layoutSpacing->addWidget(labelLetterSpacing);
-layoutSpacing->addWidget(spinboxSpacing);
-layoutTabAdvanced->addLayout(layoutSpacing);
-
-/*ScrollBar*/
-checkBoxScrollBar = new QCheckBox("Show Scroll Bar");
-checkBoxScrollBar->setChecked(scrollBar);
-
-labelScrollBar = new QLabel("Scrollbar policy:");
-layoutTabAdvanced->addWidget(labelScrollBar);
-
-layoutTabAdvanced->addWidget(checkBoxScrollBar);
+setupGeneralTab(generalTab);
+setupAdvancedTab(advancedTab);
 
 
 
-/*Border*/
-
-
-labelBorder = new QLabel("Border style:");
-layoutTabAdvanced->addWidget(labelBorder);
-
-layoutBorder= new QHBoxLayout();
-
-checkBoxBorder = new QCheckBox();
-
-spinboxBorderSize = new QSpinBox();
-spinboxBorderSize->setRange(0,20);
-spinboxBorderSize->setValue(borderSize);
-
-buttonBorderColor = new QPushButton();
-buttonBorderColor->setText("Choose a border Color");
-addSquareColor(buttonBorderColor,borderColor);
-if(borderState=="on")
-{
-    checkBoxBorder->setChecked(true);
-    activateBorder(1);
-}
-else
-{
-    checkBoxBorder->setChecked(false);
-    activateBorder(0);
-}
-
-layoutBorder->addWidget(checkBoxBorder,1);
-layoutBorder->addWidget(spinboxBorderSize,1);
-layoutBorder->addWidget(buttonBorderColor,20);
-
-layoutTabAdvanced->addLayout(layoutBorder);
 
 
 
@@ -217,9 +59,9 @@ QObject::connect(spinboxSpacing,SIGNAL(valueChanged(int)),this,SLOT(changeLetter
 QObject::connect(spinboxPaddingH,SIGNAL(valueChanged(int)),this,SLOT(changePaddingH(int)));
 QObject::connect(spinboxPaddingV,SIGNAL(valueChanged(int)),this,SLOT(changePaddingV(int)));
 
-designTab->addTab(generaltab,"General Settings");
-designTab->addTab(advancedtab,"Advanced Settings");
-designTab->setGeometry(generaltab->rect());
+designTab->addTab(generalTab,"General Settings");
+designTab->addTab(advancedTab,"Advanced Settings");
+designTab->setGeometry(generalTab->rect());
 
 
 timerPadding1 = new QTimer();
@@ -227,6 +69,175 @@ timerPadding1 = new QTimer();
 timerPadding2 = new QTimer();
 
 
+}
+void designWindow::setupGeneralTab(QWidget *generaltab)
+{
+    /*GeneralTab*/
+    QVBoxLayout *layoutTabGeneral = new QVBoxLayout(generaltab);
+
+    /*Font*/
+
+    labelTextFont = new QLabel("Font:");
+    layoutTabGeneral->addWidget(labelTextFont);
+
+    buttonFont = new QPushButton();
+    buttonFont->setText(textFamily);
+    layoutTabGeneral->addWidget(buttonFont);
+
+    /*Color*/
+
+    buttonTextColor = new QPushButton(textColor);
+    buttonBackColor = new QPushButton(backColor);
+    addSquareColor(buttonTextColor,textColor);
+    addSquareColor(buttonBackColor,backColor);
+
+    labelBackColor = new QLabel("Change primary background color:");
+    labelTextColor = new QLabel("Change text color:");
+
+    layoutTabGeneral->addWidget(labelTextColor);
+    layoutTabGeneral->addWidget(buttonTextColor);
+    layoutTabGeneral->addWidget(labelBackColor);
+    layoutTabGeneral->addWidget(buttonBackColor);
+
+
+    /*Secondary Background*/
+
+    labelBackground = new QLabel("Secondary background style:");
+    layoutTabGeneral->addWidget(labelBackground);
+
+
+    layoutBackground = new QHBoxLayout();
+
+    buttonBackgroundImage = new QPushButton();
+    buttonBackgroundImage->setText("Choose a secondary background Image");
+    buttonBackgroundColor = new QPushButton();
+    buttonBackgroundColor->setText("Choose a secondary background Color");
+
+    layoutBackground->addWidget(buttonBackgroundColor);
+    layoutBackground->addWidget(buttonBackgroundImage);
+
+    layoutTabGeneral->addLayout(layoutBackground);
+}
+void designWindow::setupAdvancedTab(QWidget *advancedTab)
+{
+
+    /*AdvancedTab*/
+    QVBoxLayout *layoutTabAdvanced = new QVBoxLayout(advancedTab);
+    /*Margin*/
+    marginH = new QSlider(Qt::Horizontal);
+    marginV = new QSlider(Qt::Horizontal);
+
+    spinboxMarginH = new QSpinBox();
+    spinboxMarginV = new QSpinBox();
+
+    layoutSlider = new QVBoxLayout();
+    layoutTabAdvanced->addLayout(layoutSlider);
+
+    labelMarginH = new QLabel("Horizontal margin:");
+    labelMarginV = new QLabel("Vertical margin:");
+
+
+    layoutSlider->addWidget(labelMarginH);
+    layoutSlider->addWidget(spinboxMarginH);
+    layoutSlider->addWidget(labelMarginV);
+    layoutSlider->addWidget(spinboxMarginV);
+
+    spinboxMarginH->setRange(0,50);
+    spinboxMarginV->setRange(0,50);
+
+
+
+    spinboxMarginV->setValue(heigthValue);
+
+
+    spinboxMarginH->setValue(widthValue);
+
+
+    spinboxPaddingH = new QSpinBox();
+    spinboxPaddingV = new QSpinBox();
+    spinboxPaddingH->setRange(0,30);
+    spinboxPaddingV->setRange(0,30);
+    spinboxPaddingH->setValue(paddingH);
+    spinboxPaddingV->setValue(paddingV);
+
+
+    changePaddingHV(paddingH,paddingV);
+
+    layoutSlider->addWidget(spinboxPaddingH);
+    layoutSlider->addWidget(spinboxPaddingV);
+
+    //set the value from last session
+
+    QRect geometry = layoutOuter->contentsRect();
+    double width = geometry.width();
+    double height = geometry.height();
+
+    double newvalue1 = (height*heigthValue)/200;
+    double newvalue2 = (width*widthValue)/200;
+
+    layoutInner->setContentsMargins(int(newvalue2),int(newvalue1),int(newvalue2),int(newvalue1));
+
+    marginbottomtop = int(newvalue1);
+    marginleftright = int(newvalue2);
+
+
+    /*Letter Spacing*/
+
+    labelLetterSpacing = new QLabel("Letter spacing(%):");
+    spinboxSpacing = new QSpinBox();
+
+    spinboxSpacing->setRange(100,1000);
+    spinboxSpacing->setValue(letterSpacing);
+
+    layoutSpacing = new QHBoxLayout();
+    layoutSpacing->addWidget(labelLetterSpacing);
+    layoutSpacing->addWidget(spinboxSpacing);
+    layoutTabAdvanced->addLayout(layoutSpacing);
+
+    /*ScrollBar*/
+    checkBoxScrollBar = new QCheckBox("Show Scroll Bar");
+    checkBoxScrollBar->setChecked(scrollBar);
+
+    labelScrollBar = new QLabel("Scrollbar policy:");
+    layoutTabAdvanced->addWidget(labelScrollBar);
+
+    layoutTabAdvanced->addWidget(checkBoxScrollBar);
+
+
+
+    /*Border*/
+
+
+    labelBorder = new QLabel("Border style:");
+    layoutTabAdvanced->addWidget(labelBorder);
+
+    layoutBorder= new QHBoxLayout();
+
+    checkBoxBorder = new QCheckBox();
+
+    spinboxBorderSize = new QSpinBox();
+    spinboxBorderSize->setRange(0,20);
+    spinboxBorderSize->setValue(borderSize);
+
+    buttonBorderColor = new QPushButton();
+    buttonBorderColor->setText("Choose a border Color");
+    addSquareColor(buttonBorderColor,borderColor);
+    if(borderState=="on")
+    {
+        checkBoxBorder->setChecked(true);
+        activateBorder(1);
+    }
+    else
+    {
+        checkBoxBorder->setChecked(false);
+        activateBorder(0);
+    }
+
+    layoutBorder->addWidget(checkBoxBorder,1);
+    layoutBorder->addWidget(spinboxBorderSize,1);
+    layoutBorder->addWidget(buttonBorderColor,20);
+
+    layoutTabAdvanced->addLayout(layoutBorder);
 }
 void designWindow::changeMarginH(int value)
 {
