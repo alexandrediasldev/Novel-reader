@@ -8,6 +8,7 @@
 #include <qmath.h>
 #include <QFileInfo>
 #include <QDir>
+#include <QEvent>
 
 #include <QMessageBox>
 
@@ -135,9 +136,9 @@ void QSmoothScrollArea::keyPressEvent(QKeyEvent *e)
         QWheelEvent *we =new QWheelEvent(*qp,-100,Qt::NoButton,Qt::NoModifier);
         wheelEvent(we);
     }
-    if(e->key() == Qt::Key_N)
+    if(e->key() == Qt::Key_Left || e ->key() == Qt::Key_Right)
     {
-        //changeChapter();
+        e->ignore();
 
     }
 

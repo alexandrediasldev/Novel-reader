@@ -5,7 +5,7 @@ HttpWindow::HttpWindow()
 {
 
 
-    urlLineEdit = new QLineEdit("https://www.wuxiaworld.com/novel/the-great-ruler/tgr-chapter-834");
+    urlLineEdit = new QLineEdit("https://www.wuxiaworld.com/novel/the-great-ruler/tgr-chapter-@");
     urlLineEdit->setWhatsThis("Input your url here");
 
     nameLineEdit = new QLineEdit("");

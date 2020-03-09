@@ -54,6 +54,9 @@ window::window()
 
     QMenu *menuHelp = menuBar()->addMenu("&Help");
 
+    helpAction = new QAction("Readme",this);
+    menuHelp->addAction(helpAction);
+
 
 
 
@@ -68,8 +71,7 @@ window::window()
     QObject::connect(customCSSAction,SIGNAL(triggered()),this,SLOT(loadCustomCss()));
     QObject::connect(designAction,SIGNAL(triggered()),this,SLOT(openDesign()));
 
-    //QKeyEvent *e = new QKeyEvent(QEvent::KeyPress,Qt::Key::Key_Right,Qt::NoModifier);
-    //QObject::connect(e,SIGNAL(),this,SLOT(changeChapter()))
+    QObject::connect(helpAction,SIGNAL(triggered()),this,SLOT(loadHelp()));
 
 
     addReadingPage();
@@ -178,7 +180,7 @@ void window::addReadingPage()
     readingPage->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     readingPage->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     readingPage->setReadOnly(true);
-    readingPage->setHtml("This is the debug text used in case there is no text opened");
+    loadHelp();
 
 
     layoutInner->addWidget(readingPage);
@@ -333,8 +335,11 @@ QString window::regexParagraph(QString html)
 
 }
 
-void window::changeChapter()
+void window::changeChapter(int direction)
 {
+    if(filePath == "")
+        return;
+
     //get all files name in the dir and load next chapter
     QString pathwithoutname = QFileInfo(filePath).absolutePath()+"/";
     QDir directory(QFileInfo(filePath).absoluteDir());
@@ -342,10 +347,10 @@ void window::changeChapter()
 
 
 
-
-    if(fileindir.indexOf(QFileInfo(filePath).fileName())+1< fileindir.length())
+    if(fileindir.indexOf(QFileInfo(filePath).fileName())+direction< fileindir.length() &&
+       fileindir.indexOf(QFileInfo(filePath).fileName())+direction>=0)
     {
-        openAndReadFile(pathwithoutname + fileindir[fileindir.indexOf(QFileInfo(filePath).fileName())+1]);
+        openAndReadFile(pathwithoutname + fileindir[fileindir.indexOf(QFileInfo(filePath).fileName())+direction]);
     }
     else {
         QMessageBox::information(this,"No more chapter","No more chapter");
@@ -369,7 +374,21 @@ void window::openDesign()
     win.setAttribute(Qt::WA_DeleteOnClose);
     connect(&win,SIGNAL(destroyed()),this,SLOT(readConfig()));
 }
+void window::loadHelp()
+{
+    readingPage->setHtml("<h1>How to download chapters:</h1>"
+                         "<p>File->Download Get the url of a chapter:</p>"
+                         "<p>https://www.wuxiaworld.com/novel/the-great-ruler/tgr-chapter-201</p>"
+                         "<p>replace the number with @:</p>"
+                         "<p>https://www.wuxiaworld.com/novel/the-great-ruler/tgr-chapter-@</p>"
+                         "<p>Chose witch chapters you want: from 200 to 560</p>"
+                         "<p>Click download</p>"
 
+                         "<h1>Change the look of the window:</h1>"
+                         "<p>Setting->Design</p>"
+
+                         "<h1>Cleaning a file is taking only the paragraph of the page(This may break some chapters due to bad html)</h1>");
+}
 void window::openDownloadTab()
 {
 
@@ -598,10 +617,15 @@ void window::paintEvent(QPaintEvent *)
 }
 void window::keyPressEvent ( QKeyEvent * event )
 {
-     if(event->key() == Qt::Key_N) // à chager par une auter touche
+
+     if(event->key() == Qt::Key_Right) // à chager par une auter touche
      {
-        changeChapter();
-    }
+        changeChapter(1);
+     }
+     if(event->key() == Qt::Key_Left)
+     {
+         changeChapter(-1);
+     }
 
 
 }

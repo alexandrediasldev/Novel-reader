@@ -57,7 +57,7 @@ public:
     void openAndCleanFile();
     QString regexParagraph(QString html);
 
-    void changeChapter();
+    void changeChapter(int direction);
 
 
 
@@ -70,6 +70,7 @@ public:
     void saveConfig();
     void readConfig();
     void loadCustomCss();
+    void loadHelp();
 
     void changeStyle();
     void changeMargin();
@@ -93,6 +94,7 @@ public:
     QAction *openFileAction;
     QAction *openFileCleanAction;
     QAction *cleanAllAction;
+    QAction *helpAction;
 
 
     QAction *customCSSAction;
