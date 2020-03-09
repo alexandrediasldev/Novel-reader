@@ -172,7 +172,7 @@ void window::addReadingPage()
 
 
 
-    readingPage = new QSmoothScrollArea();
+    readingPage = new QSmoothScrollArea(this);
 
 
     readingPage->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -339,6 +339,8 @@ void window::changeChapter()
     QString pathwithoutname = QFileInfo(filePath).absolutePath()+"/";
     QDir directory(QFileInfo(filePath).absoluteDir());
     QStringList fileindir = directory.entryList(QDir::Files);
+
+
 
 
     if(fileindir.indexOf(QFileInfo(filePath).fileName())+1< fileindir.length())
@@ -597,7 +599,9 @@ void window::paintEvent(QPaintEvent *)
 void window::keyPressEvent ( QKeyEvent * event )
 {
      if(event->key() == Qt::Key_N) // à chager par une auter touche
+     {
         changeChapter();
+    }
 
 
 }
@@ -620,3 +624,4 @@ void window::valueSetter(QString *valueToSet,QString defaultValue,QString line)
         *valueToSet= line;
     }
 }
+

@@ -6,6 +6,10 @@
 #include <QDateTime>
 #include <QQueue>
 #include <qmath.h>
+#include <QFileInfo>
+#include <QDir>
+
+#include <QMessageBox>
 
 #include "qsmoothscrollarea.h"
 //modified version of https://github.com/zhou13/qsmoothscrollarea to support arrow key
@@ -29,6 +33,7 @@ QSmoothScrollArea::QSmoothScrollArea(QWidget *parent) :
     m_smallStepRatio = 1.0 / 5.0;
     m_bigStepModifier = Qt::ALT;
     m_bigStepRatio = 5.0;
+
 }
 
 int QSmoothScrollArea::fps()
@@ -116,6 +121,7 @@ void QSmoothScrollArea::setbigStepModifier(
 
 void QSmoothScrollArea::keyPressEvent(QKeyEvent *e)
 {
+
     if(e->key() == Qt::Key_Up)
     {
         QPoint *qp = new QPoint();
@@ -129,6 +135,12 @@ void QSmoothScrollArea::keyPressEvent(QKeyEvent *e)
         QWheelEvent *we =new QWheelEvent(*qp,-100,Qt::NoButton,Qt::NoModifier);
         wheelEvent(we);
     }
+    if(e->key() == Qt::Key_N)
+    {
+        //changeChapter();
+
+    }
+
 }
 void QSmoothScrollArea::wheelEvent(QWheelEvent *e)
 {
@@ -238,3 +250,5 @@ double QSmoothScrollArea::subDelta(double delta, int stepsLeft)
 
     return 0;
 }
+
+

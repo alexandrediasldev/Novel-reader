@@ -7,13 +7,14 @@
 #include <QPair>
 #include <Qt>
 
+
 class QTimer;
 
 class QSmoothScrollArea : public QTextEdit
 {
     Q_OBJECT
 public:
-    explicit QSmoothScrollArea(QWidget *parent = 0);
+    QSmoothScrollArea(QWidget *parent);
 
     enum SmoothMode {
         NO_SMOOTH,
@@ -47,6 +48,7 @@ public:
     Qt::Modifier bigStepModifier();
     void setbigStepModifier(Qt::Modifier bigStepModifier);
 
+
 protected:
     virtual void wheelEvent(QWheelEvent *event);
     virtual void keyPressEvent(QKeyEvent *event);
@@ -62,6 +64,8 @@ private:
     QTimer *smoothMoveTimer;
     QWheelEvent *lastWheelEvent;
     QKeyEvent *lastKeyEvent;
+
+    QString *filePath;
 
     int m_fps;
     int m_duration;
